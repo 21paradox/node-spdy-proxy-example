@@ -1,4 +1,4 @@
-var spdyProxy = require('spdyproxy').createServer;
+var spdyProxy = require('./server.js').createServer;
 var path = require('path');
 var fs = require('fs');
 
