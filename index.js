@@ -1,13 +1,11 @@
 var spdyProxy = require('spdyproxy').createServer;
 var path = require('path');
+var fs = require('fs');
 
 var opt = {
-
-    key: path.resolve('/etc/letsencrypt/live/www.21paradox.com/privkey.pem'),
-    cert: path.resolve('/etc/letsencrypt/live/www.21paradox.com/cert.pem'),
-    ca: path.resolve('/etc/letsencrypt/live/www.21paradox.com/cert.pem'),
+    key: fs.readFileSync(path.resolve('/etc/letsencrypt/live/www.21paradox.com/privkey.pem')),
+    cert: fs.readFileSync(path.resolve('/etc/letsencrypt/live/www.21paradox.com/cert.pem')),
     port: 443
-
 };
 
 spdyProxy(opt);
