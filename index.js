@@ -8,4 +8,6 @@ var opt = {
     port: 443
 };
 
-spdyProxy(opt);
+var proxy = spdyProxy(opt);
+
+proxy.llisten(443);
