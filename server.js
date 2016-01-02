@@ -60,10 +60,18 @@ var SPDYProxy = function(options) {
   }
 
   function handlePlain(req, res) {
-    var path = req.headers.path || url.parse(req.url).path;
+      
+      var httpVersionMajor = req.httpVersionMajor;
+      var path = req.headers.path || url.parse(req.url).path;
+        var url1 = httpVersionMajor.url;
+    
+    
     var requestOptions = {
-      host: req.headers.host.split(':')[0],
-      port: req.headers.host.split(':')[1] || 80,
+     // host: req.headers.host.split(':')[0],
+     // port: req.headers.host.split(':')[1] || 80,
+     
+     host: url1.split(':')[0],
+    port: url1.split(':')[1] || 80,
       path: path,
       method: req.method,
       headers: req.headers
@@ -131,18 +139,19 @@ var SPDYProxy = function(options) {
   }
 
   function handleRequest(req, res) {
-    var socket = (req.method == 'CONNECT') ? res : res.socket;
-    console.log("%s:%s".yellow + " - %s - " + "stream ID: " + "%s".yellow + " - priority: " + "%s".yellow,
-      socket.connection ? socket.connection.socket.remoteAddress : socket.socket.remoteAddress,
-      socket.connection ? socket.connection.socket.remotePort : socket.socket.remotePort,
+      var socket = (req.method == 'CONNECT') ? res : res.socket;
+    
+    // console.log("%s:%s".yellow + " - %s - " + "stream ID: " + "%s".yellow + " - priority: " + "%s".yellow,
+    //   socket.connection ? socket.connection.socket.remoteAddress : socket.socket.remoteAddress,
+    //   socket.connection ? socket.connection.socket.remotePort : socket.socket.remotePort,
       
-      (socket.connection && socket.connection.socket) ? socket.connection.socket.remoteAddress : (socket.socket ? socket.socket.remoteAddress : "unknown"),  
-     (socket.connection && socket.connection.socket) ? socket.connection.socket.remotePort : (socket.socket ? socket.socket.remotePort : -1),  
+    //   (socket.connection && socket.connection.socket) ? socket.connection.socket.remoteAddress : (socket.socket ? socket.socket.remoteAddress : "unknown"),  
+    //  (socket.connection && socket.connection.socket) ? socket.connection.socket.remotePort : (socket.socket ? socket.socket.remotePort : -1),  
 
       
-      req.method, res.id || (socket._spdyState && socket._spdyState.id) || "none",
-      res.priority || (socket._spdyState && socket._spdyState.priority) || "none"
-    );
+    //   req.method, res.id || (socket._spdyState && socket._spdyState.id) || "none",
+    //   res.priority || (socket._spdyState && socket._spdyState.priority) || "none"
+    // );
 
     // node-spdy forces chunked-encoding processing on inbound
     // requests without a content-length. However, we don't want
