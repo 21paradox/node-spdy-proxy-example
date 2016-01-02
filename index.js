@@ -1,4 +1,4 @@
-var spdyProxy = require('spdyproxy');
+var spdyProxy = require('spdyproxy').createServer;
 var path = require('path');
 
 var opt = {
