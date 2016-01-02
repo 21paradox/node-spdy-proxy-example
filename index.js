@@ -11,4 +11,21 @@ var opt = {
 var proxy = spdyProxy(opt);
 
 
-proxy.listen(443);
+var setup = require('proxy');
+//var server = setup(http.createServer());
+
+
+var spdy = require('spdy');
+var server = spdy.createServer(opt);
+
+var server1 = setup(server);
+
+server1.listen(443, function () {
+    var port = server.address().port;
+    console.log('HTTP(s) proxy server listening on port %d', port);
+});
+
+ 
+
+
+// undefinedError: getaddrinfo ENOTFOUND www.google.com.kr www.google.com.kr:443

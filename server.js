@@ -55,7 +55,9 @@ var SPDYProxy = function(options) {
         socket.write(statusLine + headerLines + '\r\n', 'UTF-8', cb);
       }
     } catch(error) {
-      cb.call();
+      
+	console.log(error);
+cb.call();
     }
   }
 
@@ -64,19 +66,21 @@ var SPDYProxy = function(options) {
       var httpVersionMajor = req.httpVersionMajor;
       var path = req.headers.path || url.parse(req.url).path;
         var url1 = httpVersionMajor.url;
-    
+    console.log(req.headers);
     
     var requestOptions = {
-     // host: req.headers.host.split(':')[0],
-     // port: req.headers.host.split(':')[1] || 80,
+   host: req.headers.host.split(':')[0],
+   port: req.headers.host.split(':')[1] || 80,
      
-     host: url1.split(':')[0],
-    port: url1.split(':')[1] || 80,
+  //   host: url1.split(':')[0],
+   //  port: url1.split(':')[1] || 80,
       path: path,
       method: req.method,
       headers: req.headers
     };
-    if (options.localAddress) {
+    console.log(requestOptions, url);
+
+if (options.localAddress) {
       requestOptions.localAddress = options.localAddress;
     }
 
@@ -110,8 +114,20 @@ var SPDYProxy = function(options) {
     var requestOptions = {
       host: req.url.split(':')[0],
       port: req.url.split(':')[1] || 443,
-    };
-    if (options.localAddress) {
+    
+};
+
+
+//console.log(req.headers);
+  //var httpVersionMajor = req.httpVersionMajor;
+   //    var url1 = httpVersionMajor.url;
+    
+//console.log(requestOptions)
+requestOptions.host = req.headers.host.split(':')[0];
+
+console.log(requestOptions);
+
+if (options.localAddress) {
       requestOptions.localAddress = options.localAddress;
     }
 
@@ -127,6 +143,11 @@ var SPDYProxy = function(options) {
         }
       );
     });
+
+
+socket.on('error', (err) => {
+  console.log(err);
+});
 
     tunnel.setNoDelay(true);
 
@@ -158,7 +179,10 @@ var SPDYProxy = function(options) {
     // want to pass this injected header through to the destination.
     delete req.headers['transfer-encoding'];
 
-    var dispatcher = function (req, res) {
+ //console.log(req);    
+
+
+var dispatcher = function (req, res) {
         
         
       req.method == 'CONNECT' ? handleSecure(req, res) : handlePlain(req, res);
@@ -214,3 +238,4 @@ var createServer = function(options) {
 
 exports.SPDYProxy = SPDYProxy;
 exports.createServer = createServer;
+
