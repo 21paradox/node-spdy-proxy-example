@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "http-proxy": "^1.12.0",
     "spdyproxy": "^0.2.7"
   },
   "devDependencies": {},

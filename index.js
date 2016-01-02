@@ -8,6 +8,18 @@ var opt = {
     port: 443
 };
 
-var proxy = spdyProxy(opt);
+var options = {
+    key: fs.readFileSync(path.resolve('/etc/letsencrypt/live/www.21paradox.com/privkey.pem')),
+    cert: fs.readFileSync(path.resolve('/etc/letsencrypt/live/www.21paradox.com/cert.pem')),
+};
 
-proxy.llisten(443);
+var spdy = require('spdy');
+
+var server = spdy.createServer(options, function (req, res) {
+ 
+  console.log(req);
+  res.writeHead(200);
+  res.end('hello world!');
+});
+ 
+server.listen(443);
