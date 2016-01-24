@@ -9,21 +9,24 @@ var opt = {
 };
 
 var proxy = spdyProxy(opt);
-
-
 var setup = require('proxy');
-//var server = setup(http.createServer());
 
+var spdy = require('spdy');
+var server = spdy.createServer(opt);
 
-// var spdy = require('spdy');
-// var server = spdy.createServer(opt);
+var Agent = require('agentkeepalive');
 
-// var server1 = setup(server);
+var keepaliveAgent = new Agent({
+  maxSockets: 100,
+  maxFreeSockets: 10,
+  timeout: 60000,
+  keepAliveTimeout: 30000 // free socket keepalive for 30 seconds
+});
 
-// server1.listen(443, function () {
-//     var port = server.address().port;
-//     console.log('HTTP(s) proxy server listening on port %d', port);
-// });
+server.agent = keepaliveAgent;
+var server1 = setup(server);
 
-
-proxy.listen(443);
+server1.listen(443, function () {
+    var port = server.address().port;
+    console.log('HTTP(s) proxy server listening on port %d', port);
+});
