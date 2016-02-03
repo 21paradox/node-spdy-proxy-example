@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "agentkeepalive": "^2.0.3",
+    "nconf": "^0.8.4",
     "proxy": "^0.2.3",
     "spdy": "^3.0.0"
   },

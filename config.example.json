@@ -1,0 +1,5 @@
+{
+    "keypath": "/etc/letsencrypt/live/www.21paradox.com/privkey.pem",
+    "certpath": "/etc/letsencrypt/live/www.21paradox.com/cert.pem",
+    "port": 443
+}
